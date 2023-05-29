@@ -39,8 +39,11 @@ function App() {
     }
   }
 
-  function handleInputChange(event) {
+  function handleBookNameInputChange(event) {
     setNewBookName(event.target.value);
+  }
+
+  function handleBookAuthorNameInputChange(event) {
     setNewAuthorName(event.target.value);
   }
 
@@ -53,7 +56,7 @@ function App() {
             type="text"
             name="name"
             value={newBookName}
-            onChange={handleInputChange}
+            onChange={handleBookNameInputChange}
             required
           />
         </label>
@@ -63,7 +66,7 @@ function App() {
             type="text"
             name="name"
             value={newAuthorName}
-            onChange={handleInputChange}
+            onChange={handleBookAuthorNameInputChange}
             required
           />
         </label>
