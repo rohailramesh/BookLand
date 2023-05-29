@@ -39,6 +39,16 @@ function App() {
     }
   }
 
+  async function deleteBook(id) {
+    try {
+      const { error } = await supabase.from("Books").delete().eq("id", id);
+
+      console.log(error);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleBookNameInputChange(event) {
     setNewBookName(event.target.value);
   }
@@ -78,9 +88,14 @@ function App() {
 
       <ul>
         {books.map((book) => (
-          <li key={book.id}>
-            {book.bookName}, {book.bookAuthor}
-          </li>
+          <div>
+            <li key={book.id}>
+              {book.bookName}, {book.bookAuthor}
+            </li>
+            <button type="button" onClick={() => deleteBook(book.id)}>
+              Delete Book
+            </button>
+          </div>
         ))}
       </ul>
     </div>
