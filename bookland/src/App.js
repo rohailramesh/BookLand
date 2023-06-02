@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "./supabaseClient";
+import BookSearch from "./googleapi";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -98,6 +99,7 @@ function App() {
           </div>
         ))}
       </ul>
+      <BookSearch />
     </div>
   );
 }
