@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { Input, Button, Typography, Card } from "antd";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import supabase from "./supabaseClient";
+// import "antd/dist/antd.css";
 
-const YourComponent = () => {
+const { Title, Text } = Typography;
+
+const BookSearch = () => {
   const [bookData, setBookData] = useState(null);
   const [bookName, setBookName] = useState("");
   const [searchClicked, setSearchClicked] = useState(false);
@@ -34,32 +40,75 @@ const YourComponent = () => {
     setSearchClicked(true);
   }
 
+  async function insertBook(bookName, authorName, bookCover) {
+    try {
+      const { error } = await supabase
+        .from("Books")
+        .insert([
+          { bookName: bookName, bookAuthor: authorName, bookCover: bookCover },
+        ]);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <div>
-      <div>
+    <div style={{ padding: "24px" }}>
+      <div style={{ marginBottom: "24px" }}>
         <form onSubmit={handleSearchClick}>
-          <label>
-            Search:{" "}
-            <input
-              type="text"
-              name="name"
-              value={bookName}
-              onChange={handleBookNameChange}
-            />
-          </label>
-          <button type="submit">Search</button>
+          <Input
+            type="text"
+            placeholder="Enter book name"
+            value={bookName}
+            onChange={handleBookNameChange}
+          />
+          <Button type="primary" onClick={handleSearchClick}>
+            Search
+          </Button>
         </form>
       </div>
       <div>
         {bookData && bookData.items && bookData.items.length > 0 ? (
           <div>
-            <h2>{bookData.items[0].volumeInfo.title}</h2>
-            <p>Author: {bookData.items[0].volumeInfo.authors[0]}</p>
-            <img
-              src={bookData.items[0].volumeInfo.imageLinks.thumbnail}
-              alt="Book Cover"
-            />
-            <p>Description: {bookData.items[0].volumeInfo.description}</p>
+            {bookData.items.slice(0, 3).map((item) => (
+              <Card
+                key={item.id}
+                style={{
+                  marginBottom: "24px",
+                  width: "500px",
+                  display: "flex",
+                  position: "relative",
+                }}
+              >
+                <img
+                  src={item.volumeInfo.imageLinks.thumbnail}
+                  alt="Book Cover"
+                  style={{ marginBottom: "16px" }}
+                />
+                <Title level={4}>{item.volumeInfo.title}</Title>
+                <Text>Author: {item.volumeInfo.authors[0]}</Text>
+                <Text>Description: {item.volumeInfo.description}</Text>
+                <br></br>
+                <Button
+                  type="primary"
+                  icon={<PlusCircleOutlined />}
+                  onClick={() =>
+                    insertBook(
+                      item.volumeInfo.title,
+                      item.volumeInfo.authors[0],
+                      item.volumeInfo.imageLinks.thumbnail
+                    )
+                  }
+                >
+                  Add Book
+                </Button>
+              </Card>
+            ))}
           </div>
         ) : (
           <p>No book found</p>
@@ -69,6 +118,6 @@ const YourComponent = () => {
   );
 };
 
-export default YourComponent;
+export default BookSearch;
 
 // AIzaSyCMusI39bGt0vHoLkjw9dufH6yTDw2Dq1k
