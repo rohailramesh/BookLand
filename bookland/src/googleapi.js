@@ -16,7 +16,7 @@ const BookSearch = () => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${bookName}&key=AIzaSyCMusI39bGt0vHoLkjw9dufH6yTDw2Dq1k`
+            `https://www.googleapis.com/books/v1/volumes?q=${bookName}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
           );
           const data = await response.json();
           console.log(data); // Log the response data to the console
@@ -119,5 +119,3 @@ const BookSearch = () => {
 };
 
 export default BookSearch;
-
-// AIzaSyCMusI39bGt0vHoLkjw9dufH6yTDw2Dq1k
