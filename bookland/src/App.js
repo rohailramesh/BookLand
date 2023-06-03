@@ -1,12 +1,18 @@
-// import { useEffect, useState } from "react";
 import BookSearch from "./googleapi";
 import SupabasePractice from "./supabasePractice";
+import Navbar from "./Navbar";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <div>
-      <BookSearch />
-      <SupabasePractice />
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<BookSearch />} />
+          <Route path="/mybooks" element={<SupabasePractice />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
