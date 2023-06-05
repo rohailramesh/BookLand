@@ -89,7 +89,8 @@ const BookSearch = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        height: "100vh",
+        minHeight: "100vh",
+        overflow: "auto",
       }}
     >
       {/* Rest of the code */}
@@ -141,15 +142,26 @@ const BookSearch = () => {
 
       <div>
         {bookData && bookData.items && bookData.items.length > 0 ? (
-          <div>
-            {bookData.items.slice(0, 3).map((item) => (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            {bookData.items.slice(0, 4).map((item) => (
               <Card
                 key={item.id}
                 style={{
-                  marginBottom: "24px",
-                  width: "500px",
+                  width: "350px",
+                  margin: "12px",
+                  flex: "0 0 auto",
                   display: "flex",
-                  position: "relative",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "16px",
+                  textAlign: "center",
                 }}
               >
                 <img
@@ -159,7 +171,6 @@ const BookSearch = () => {
                 />
                 <Title level={4}>{item.volumeInfo.title}</Title>
                 <Text>Author: {item.volumeInfo.authors?.[0]}</Text>
-                <Text>Description: {item.volumeInfo.description}</Text>
                 <br></br>
 
                 <Button
@@ -178,6 +189,7 @@ const BookSearch = () => {
                 </Button>
               </Card>
             ))}
+            &nbsp;
           </div>
         ) : (
           <div style={{}}>
