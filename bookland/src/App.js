@@ -1,5 +1,5 @@
 import BookSearch from "./googleapi";
-import SupabasePractice from "./supabasePractice";
+import SupabasePractice from "./SupabaseBooks";
 import Navbar from "./Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
