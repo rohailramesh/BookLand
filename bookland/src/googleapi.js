@@ -40,12 +40,16 @@ const BookSearch = () => {
     setSearchClicked(true);
   }
 
-  async function insertBook(bookName, authorName, bookCover) {
+  async function insertBook(bookName, authorName, thumbnail) {
     try {
       const { error } = await supabase
         .from("Books")
         .insert([
-          { bookName: bookName, bookAuthor: authorName, bookCover: bookCover },
+          {
+            bookName: bookName,
+            bookAuthor: authorName,
+            bookThumbnail: thumbnail,
+          },
         ]);
 
       if (error) {
