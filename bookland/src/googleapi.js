@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Input, Button, Typography, Card } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import supabase from "./supabaseClient";
-// import "antd/dist/antd.css";
+import Lottie from "lottie-react-web";
+import lottie from "../src/lottie.json";
 
 const { Title, Text } = Typography;
 
@@ -19,15 +20,15 @@ const BookSearch = () => {
             `https://www.googleapis.com/books/v1/volumes?q=${bookName}&key=${process.env.REACT_APP_GOOGLE_API_KEY}`
           );
           const data = await response.json();
-          console.log(data); // Log the response data to the console
-          setBookData(data); // Store the response data in state
+          console.log(data);
+          setBookData(data);
         } catch (error) {
           console.log("Error fetching data:", error);
         }
       };
 
       fetchData();
-      setSearchClicked(false); // Reset searchClicked state
+      setSearchClicked(false);
     }
   }, [bookName, searchClicked]);
 
@@ -36,21 +37,19 @@ const BookSearch = () => {
   }
 
   function handleSearchClick(event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
     setSearchClicked(true);
   }
 
   async function insertBook(bookName, authorName, thumbnail) {
     try {
-      const { error } = await supabase
-        .from("Books")
-        .insert([
-          {
-            bookName: bookName,
-            bookAuthor: authorName,
-            bookThumbnail: thumbnail,
-          },
-        ]);
+      const { error } = await supabase.from("Books").insert([
+        {
+          bookName: bookName,
+          bookAuthor: authorName,
+          bookThumbnail: thumbnail,
+        },
+      ]);
 
       if (error) {
         console.error(error);
@@ -62,7 +61,7 @@ const BookSearch = () => {
   }
 
   return (
-    <div style={{ padding: "24px" }}>
+    <div style={{ padding: "50px" }}>
       <div style={{ marginBottom: "24px" }}>
         <form onSubmit={handleSearchClick}>
           <Input
@@ -70,9 +69,11 @@ const BookSearch = () => {
             placeholder="Enter book name"
             value={bookName}
             onChange={handleBookNameChange}
+            style={{ width: "300px" }}
           />
+          &nbsp;
           <Button type="primary" onClick={handleSearchClick}>
-            Search
+            <SearchOutlined />
           </Button>
         </form>
       </div>
@@ -90,12 +91,12 @@ const BookSearch = () => {
                 }}
               >
                 <img
-                  src={item.volumeInfo.imageLinks.thumbnail}
+                  src={item.volumeInfo.imageLinks?.thumbnail}
                   alt="Book Cover"
                   style={{ marginBottom: "16px" }}
                 />
                 <Title level={4}>{item.volumeInfo.title}</Title>
-                <Text>Author: {item.volumeInfo.authors[0]}</Text>
+                <Text>Author: {item.volumeInfo.authors?.[0]}</Text>
                 <Text>Description: {item.volumeInfo.description}</Text>
                 <br></br>
                 <Button
@@ -104,8 +105,8 @@ const BookSearch = () => {
                   onClick={() =>
                     insertBook(
                       item.volumeInfo.title,
-                      item.volumeInfo.authors[0],
-                      item.volumeInfo.imageLinks.thumbnail
+                      item.volumeInfo.authors?.[0],
+                      item.volumeInfo.imageLinks?.thumbnail
                     )
                   }
                 >
@@ -115,7 +116,16 @@ const BookSearch = () => {
             ))}
           </div>
         ) : (
-          <p>No book found</p>
+          <div style={{}}>
+            <Lottie
+              options={{
+                animationData: lottie,
+                loop: true,
+              }}
+              height={800}
+              width={800}
+            />
+          </div>
         )}
       </div>
     </div>
