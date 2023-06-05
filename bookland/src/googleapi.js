@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Input, Button, Typography, Card } from "antd";
-import { PlusCircleOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  PlusCircleOutlined,
+  SearchOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 import supabase from "./supabaseClient";
 import Lottie from "lottie-react-web";
-import lottie from "../src/lottie.json";
+// import lottie from "../src/lottie.json";
+import lottie2 from "../src/lottie2.json";
+import { notification } from "antd";
 
 const { Title, Text } = Typography;
 
@@ -11,6 +17,13 @@ const BookSearch = () => {
   const [bookData, setBookData] = useState(null);
   const [bookName, setBookName] = useState("");
   const [searchClicked, setSearchClicked] = useState(false);
+
+  const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: "Book Added",
+      description: "The book was successfully added!",
+    });
+  };
 
   useEffect(() => {
     if (searchClicked) {
@@ -41,6 +54,10 @@ const BookSearch = () => {
     setSearchClicked(true);
   }
 
+  function handleClear() {
+    setBookName("");
+  }
+
   async function insertBook(bookName, authorName, thumbnail) {
     try {
       const { error } = await supabase.from("Books").insert([
@@ -55,28 +72,73 @@ const BookSearch = () => {
         console.error(error);
         return;
       }
+
+      // Book inserted successfully, trigger notification
+      openNotificationWithIcon("success");
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <div style={{ padding: "50px" }}>
-      <div style={{ marginBottom: "24px" }}>
-        <form onSubmit={handleSearchClick}>
-          <Input
-            type="text"
-            placeholder="Enter book name"
-            value={bookName}
-            onChange={handleBookNameChange}
-            style={{ width: "300px" }}
-          />
-          &nbsp;
-          <Button type="primary" onClick={handleSearchClick}>
-            <SearchOutlined />
-          </Button>
-        </form>
+    <div
+      style={{
+        padding: "50px",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
+      {/* Rest of the code */}
+      <div
+        style={{
+          marginBottom: "24px",
+          display: "flex",
+          alignItems: "center",
+          // maxWidth: "1500px",
+        }}
+      >
+        <Button
+          style={{
+            backgroundColor: "#000",
+            color: "#fff",
+            width: "50px",
+            height: "40px",
+          }}
+          onClick={handleClear}
+        >
+          <CloseCircleOutlined />
+        </Button>
+        <Input
+          type="text"
+          placeholder="Enter book name"
+          value={bookName}
+          onChange={handleBookNameChange}
+          style={{
+            flex: 1,
+            marginLeft: "10px",
+            marginRight: "10px",
+            height: "40px",
+            width: "400px",
+            textAlign: "center",
+          }}
+        />
+        <Button
+          style={{
+            backgroundColor: "#000",
+            color: "#fff",
+            width: "50px",
+            height: "40px",
+          }}
+          onClick={handleSearchClick}
+        >
+          <SearchOutlined />
+        </Button>
       </div>
+
       <div>
         {bookData && bookData.items && bookData.items.length > 0 ? (
           <div>
@@ -99,8 +161,9 @@ const BookSearch = () => {
                 <Text>Author: {item.volumeInfo.authors?.[0]}</Text>
                 <Text>Description: {item.volumeInfo.description}</Text>
                 <br></br>
+
                 <Button
-                  type="primary"
+                  // type="primary"
                   icon={<PlusCircleOutlined />}
                   onClick={() =>
                     insertBook(
@@ -109,6 +172,7 @@ const BookSearch = () => {
                       item.volumeInfo.imageLinks?.thumbnail
                     )
                   }
+                  style={{ backgroundColor: "#000", color: "#fff" }}
                 >
                   Add Book
                 </Button>
@@ -119,11 +183,11 @@ const BookSearch = () => {
           <div style={{}}>
             <Lottie
               options={{
-                animationData: lottie,
+                animationData: lottie2,
                 loop: true,
               }}
-              height={800}
-              width={800}
+              height={600}
+              width={600}
             />
           </div>
         )}
