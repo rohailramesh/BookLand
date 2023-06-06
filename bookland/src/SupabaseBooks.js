@@ -59,15 +59,15 @@ function SupabasePractice() {
       style={{
         display: "flex",
         flexWrap: "wrap",
-        // justifyContent: "center",
-        alignItems: "flex-start",
+        justifyContent: "center",
+        // alignItems: "flex-start",
       }}
     >
       {books.map((book) => (
         <Card
           key={book.id}
           style={{
-            width: "350px",
+            width: "290px",
             margin: "12px",
             flex: "0 0 auto",
             display: "flex",

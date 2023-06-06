@@ -100,6 +100,7 @@ const BookSearch = () => {
           display: "flex",
           alignItems: "center",
           // maxWidth: "1500px",
+          width: "350px",
         }}
       >
         <Button
@@ -149,11 +150,11 @@ const BookSearch = () => {
               justifyContent: "center",
             }}
           >
-            {bookData.items.slice(0, 4).map((item) => (
+            {bookData.items.map((item) => (
               <Card
                 key={item.id}
                 style={{
-                  width: "350px",
+                  width: "290px",
                   margin: "12px",
                   flex: "0 0 auto",
                   display: "flex",
@@ -198,8 +199,8 @@ const BookSearch = () => {
                 animationData: lottie2,
                 loop: true,
               }}
-              height={600}
-              width={600}
+              height={500}
+              width={500}
             />
           </div>
         )}
