@@ -231,6 +231,7 @@ import supabase from "./supabaseClient";
 import { Input, Button, Typography, Card, Pagination } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { notification } from "antd";
+import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -372,6 +373,9 @@ function SupabasePractice() {
               }}
             >
               Delete Book
+            </Button>
+            <Button>
+              <Link to={`/books/${book.id}`}>View Book</Link>
             </Button>
           </Card>
         ))}
