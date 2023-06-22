@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import supabase from "./supabaseClient";
 import { Typography, Card } from "antd";
+import AddChapterForm from "./AddChapterForm";
 
 const { Title, Text } = Typography;
 
 function BookInfo() {
   const { id } = useParams();
   const [book, setBook] = useState(null);
+  const [showAddChapterForm, setShowAddChapterForm] = useState(false);
+  const [selectedBookId, setSelectedBookId] = useState(null);
+  const [chapters, setChapters] = useState([]);
+  const [showChapters, setShowChapters] = useState(false);
 
   useEffect(() => {
     async function getBook() {
@@ -31,12 +36,50 @@ function BookInfo() {
     return <div>Loading...</div>;
   }
 
+  //
+  async function handleAddChapterSubmit(bookId, chapterTitle, chapterNotes) {
+    try {
+      console.log("bookId:", bookId);
+      console.log("chapterTitle:", chapterTitle);
+      console.log("chapterNotes:", chapterNotes);
+
+      // Save the chapter to the database using Supabase
+      const { data, error } = await supabase.from("Book_Chapters").insert([
+        {
+          bookId: bookId,
+          chapterTitle: chapterTitle,
+          chapterNotes: chapterNotes,
+        },
+      ]);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      // Chapter added successfully, display a success message or update the UI
+      console.log("Chapter added:", data);
+
+      // Close the AddChapterForm
+      setShowAddChapterForm(false);
+      setShowChapters(false);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+      }}
+    >
       <Card
         key={book.id}
         style={{
-          width: "220px",
+          width: "320px",
           margin: "12px",
           flex: "0 0 auto",
           display: "flex",
@@ -65,6 +108,14 @@ function BookInfo() {
           <Text style={{ marginBottom: "8px" }}>{book.bookAuthor}</Text>
         </div>
       </Card>
+
+      <div style={{ paddingTop: "18px" }}>
+        <AddChapterForm
+          bookId={book.id}
+          onSubmit={handleAddChapterSubmit}
+          onCancel={() => setShowAddChapterForm(false)}
+        />
+      </div>
     </div>
   );
 }

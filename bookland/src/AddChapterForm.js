@@ -28,7 +28,11 @@ const AddChapterForm = ({ bookId, onSubmit, onCancel }) => {
         <Input.TextArea value={chapterNotes} onChange={handleNotesChange} />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button
+          type="primary"
+          htmlType="submit"
+          style={{ backgroundColor: "#000", color: "#fff" }}
+        >
           Save Chapter
         </Button>
         <Button onClick={onCancel} style={{ marginLeft: 8 }}>

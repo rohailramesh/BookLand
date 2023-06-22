@@ -229,7 +229,7 @@
 import { useEffect, useState } from "react";
 import supabase from "./supabaseClient";
 import { Input, Button, Typography, Card, Pagination } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { notification } from "antd";
 import { Link } from "react-router-dom";
 
@@ -363,6 +363,7 @@ function SupabasePractice() {
               </Title>
               <Text style={{ marginBottom: "8px" }}>{book.bookAuthor}</Text>
             </div>
+            &nbsp; &nbsp;
             <Button
               icon={<DeleteOutlined />}
               onClick={() => deleteBook(book.id)}
@@ -371,12 +372,11 @@ function SupabasePractice() {
                 color: "#fff",
                 marginTop: "auto",
               }}
-            >
-              Delete Book
-            </Button>
-            <Button>
-              <Link to={`/books/${book.id}`}>View Book</Link>
-            </Button>
+            ></Button>
+            &nbsp;
+            <Link to={`/books/${book.id}`}>
+              <Button icon={<EyeOutlined />} />
+            </Link>
           </Card>
         ))}
       </div>
