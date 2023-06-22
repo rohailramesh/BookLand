@@ -17,6 +17,8 @@ const AddChapterForm = ({ bookId, onSubmit, onCancel }) => {
     e.preventDefault();
     console.log("Submitting form:", bookId, chapterTitle, chapterNotes);
     onSubmit(bookId, chapterTitle, chapterNotes);
+    setChapterTitle("");
+    setChapterNotes("");
   };
 
   return (

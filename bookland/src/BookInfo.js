@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import supabase from "./supabaseClient";
-import { Typography, Card } from "antd";
+import { Typography, Card, notification } from "antd";
 import AddChapterForm from "./AddChapterForm";
 
 const { Title, Text } = Typography;
@@ -13,6 +13,12 @@ function BookInfo() {
   const [selectedBookId, setSelectedBookId] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [showChapters, setShowChapters] = useState(false);
+  const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: "Chapter Added",
+      description: "The chapter was successfully added!",
+    });
+  };
 
   useEffect(() => {
     async function getBook() {
@@ -63,6 +69,7 @@ function BookInfo() {
       // Close the AddChapterForm
       setShowAddChapterForm(false);
       setShowChapters(false);
+      openNotificationWithIcon("success");
     } catch (error) {
       console.error(error);
     }
