@@ -363,6 +363,9 @@ function SupabasePractice() {
               </Title>
               <Text style={{ marginBottom: "8px" }}>{book.bookAuthor}</Text>
             </div>
+            <Link to={`/books/${book.id}`}>
+              <Button icon={<EyeOutlined />} />
+            </Link>
             &nbsp; &nbsp;
             <Button
               icon={<DeleteOutlined />}
@@ -374,9 +377,6 @@ function SupabasePractice() {
               }}
             ></Button>
             &nbsp;
-            <Link to={`/books/${book.id}`}>
-              <Button icon={<EyeOutlined />} />
-            </Link>
           </Card>
         ))}
       </div>
